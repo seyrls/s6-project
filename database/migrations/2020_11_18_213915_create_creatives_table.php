@@ -17,8 +17,6 @@ class CreateCreativesTable extends Migration
             $table->id();
             $table->string('name', 256);
             $table->string('description', 512);
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

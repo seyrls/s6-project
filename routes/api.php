@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CreativeController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+//\Illuminate\Support\Facades\Broadcast::routes(['middleware' => ['auth:sanctum']]);
+
+
+Route::middleware('auth:sanctum')->get('user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/login', [RegisterController::class, 'postLoginAction']);
+//Route::middleware(['auth:sanctum'])->group(function () {
+//    Route::get('/users', [RegisterController::class, 'postLoginAction']);
+//});
+
+Route::get('creatives', [CreativeController::class, 'cgetAction']);
+Route::get('creatives/{id}', [CreativeController::class, 'getAction']);
+Route::post('creatives', [CreativeController::class, 'postAction']);
