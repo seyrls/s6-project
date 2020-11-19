@@ -32,13 +32,19 @@ class CreativeManager {
         return $repo->saveOrFail();
     }
 
-    public function updateCreative()
+    public function updateCreative(array $data)
     {
+        $repo = new Creative();
+        $repo->name = $data['name'] ?? $repo->getOriginal('name');
+        $repo->description = $data['description'] ?? $repo->getOriginal('description');;
 
+        return $repo->saveOrFail();
     }
 
-    public function isCreativeValid(): bool
+    public function isCreativeValid(int $id): bool
     {
+        $creative = $this->repo::findOrFail($id);
 
+        return isset ($creative->id);
     }
 }

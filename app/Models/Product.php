@@ -15,4 +15,19 @@ class Product extends Model
         'sku',
         'image_url',
     ];
+
+    public function creative()
+    {
+        return $this->belongsTo(Creative::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(OrderLineItem::class, 'order_line_items', 'product_id');
+    }
 }

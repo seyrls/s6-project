@@ -33,9 +33,4 @@ class ProductManager
 
         return $product->saveOrFail();
     }
-
-    public function updateProduct()
-    {
-
-    }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Transformers\Creatives;
+namespace App\Http\Transformers\Orders;
 
 use App\Http\Transformers\Products\ProductTransformer;
 use App\Http\Transformers\TransformerAbstract;
 
-class CreativeTransformer extends TransformerAbstract
+class OrderTransformer extends TransformerAbstract
 {
     protected $defaultIncludes = ['products'];
 
@@ -13,15 +13,17 @@ class CreativeTransformer extends TransformerAbstract
     {
         return [
             'id' => $data->id,
-            'name'=> $data->name,
-            'description' => $data->description,
+            'subtotal' => $data->subtotal,
+            'tax' => $data->tax,
+            'fee' => $data->fee,
+            'total' => $data->total,
         ];
     }
 
     public function includeProducts($data)
     {
-        if (!empty($data->products)) {
-            return $this->collection($data->products, new ProductTransformer());
+        if (empty($data->products)) {
+            return $this->collection($data->items, new ProductTransformer());
         }
 
         return $this->null();

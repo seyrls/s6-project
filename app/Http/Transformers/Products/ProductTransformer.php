@@ -6,13 +6,13 @@ use App\Http\Transformers\TransformerAbstract;
 
 class ProductTransformer extends TransformerAbstract
 {
-    public function transform(array $data)
+    public function transform($data)
     {
         return [
-            'name' => $data['name'],
-            'price' => $data['price'],
-            'sku' => $data['sku'],
-            'image_url' => $data['image_url'],
+            'name' => $data->name,
+            'price' => $data->price,
+            'sku' => $data->sku,
+            'image_url' => $data->image_url,
         ];
     }
 }

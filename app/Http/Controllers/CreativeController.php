@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Transformers\Creatives\CreativeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreativeRequestValidator;
 use App\Managers\Creative\CreativeManager;
 
@@ -23,7 +22,7 @@ class CreativeController extends Controller
     {
         $data = $this->manager->getCreatives();
 
-        return $this->respondWithCollection($data->toArray(), new CreativeTransformer());
+        return $this->respondWithCollection($data, new CreativeTransformer());
     }
 
     public function getAction(int $id)
@@ -38,7 +37,7 @@ class CreativeController extends Controller
                         ->respondWithError('Internal error.');
         }
 
-        return $this->respondWithItem($data->toArray(), new CreativeTransformer());
+        return $this->respondWithItem($data, new CreativeTransformer());
     }
 
     public function postAction(CreativeRequestValidator $request)
@@ -47,11 +46,11 @@ class CreativeController extends Controller
 
         if (empty($validation) === false) {
             return $this->setStatusCode(400)
-                        ->respondWithError($validation);
+                        ->respondWithError('Invalid fields.');
         }
 
         try {
-            $result = $this->manager->createCreative($request->toArray());
+            $this->manager->createCreative($request->toArray());
         } catch (\Exception $ex) {
             return $this->setStatusCode(500)->respondWithError('Internal error.');
         }
@@ -59,8 +58,26 @@ class CreativeController extends Controller
         return $this->setStatusCode(204)->respondWithNothing();
     }
 
-    public function patchAction(Request $request, int $id)
+    public function patchAction(CreativeRequestValidator $request, int $id)
     {
+        $validation = $request->validate($request->rules());
 
+        if (empty($validation) === false) {
+            return $this->setStatusCode(400)
+                        ->respondWithError('Invalid fields.');
+        }
+
+        try {
+            $is_valid = $this->manager->isCreativeValid($id);
+
+            if (empty($is_valid) === false) {
+                return $this->setStatusCode(403)
+                            ->respondWithError('Invalid resource. Please, try it again.');
+            }
+
+            $this->manager->updateCreative($request->toArray());
+        } catch (\Exception $ex) {
+            return $this->setStatusCode(500)->respondWithError('Internal error.');
+        }
     }
 }

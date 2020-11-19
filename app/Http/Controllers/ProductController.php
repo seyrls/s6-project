@@ -18,9 +18,11 @@ class ProductController extends Controller
         parent::__construct();
     }
 
-    public function cgetAction()
+    public function cgetAction(int $creative_id)
     {
+        $data = $this->manager->getProducts($creative_id);
 
+        return $this->respondWithCollection($data, new ProductTransformer());
     }
 
     public function getAction(int $id)
@@ -35,16 +37,6 @@ class ProductController extends Controller
                         ->respondWithError('Internal error.');
         }
 
-        return $this->respondWithItem($data->toArray(), new ProductTransformer());
-    }
-
-    public function postAction()
-    {
-
-    }
-
-    public function patchAction()
-    {
-
+        return $this->respondWithItem($data, new ProductTransformer());
     }
 }

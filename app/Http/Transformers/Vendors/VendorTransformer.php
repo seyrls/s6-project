@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Transformers\Creatives;
+namespace App\Http\Transformers\Vendors;
 
 use App\Http\Transformers\Products\ProductTransformer;
 use App\Http\Transformers\TransformerAbstract;
 
-class CreativeTransformer extends TransformerAbstract
+class VendorTransformer extends TransformerAbstract
 {
     protected $defaultIncludes = ['products'];
 
@@ -13,8 +13,7 @@ class CreativeTransformer extends TransformerAbstract
     {
         return [
             'id' => $data->id,
-            'name'=> $data->name,
-            'description' => $data->description,
+            'name' => $data->name,
         ];
     }
 

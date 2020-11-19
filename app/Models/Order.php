@@ -15,4 +15,9 @@ class Order extends Model
         'fee',
         'total',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(OrderLineItem::class, 'order_id');
+    }
 }
