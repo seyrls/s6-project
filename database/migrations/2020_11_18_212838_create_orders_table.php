@@ -15,6 +15,12 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->double('subtotal', 8, 2);
+            $table->double('tax', 8, 2);
+            $table->double('fee', 8, 2);
+            $table->double('total', 8, 2);
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
